@@ -1,0 +1,126 @@
+set Days := Monday Tuesday Wednesday Thursday Friday Saturday Sunday;
+set Halls := Frank Frary Collins Hoch McConnell Mallot;
+set Restrictions := None Vegan Allergies;
+set Meals := Breakfast Brunch Lunch Dinner;
+set Locations := Pomona Scripps CMC Pitzer Mudd;
+
+param waitTime :=
+[Breakfast, *]		Frank 0.1 Frary 0.1 Collins 0.1 Hoch 0.1 McConnell 0.1 Mallot 0.1
+[Brunch, *]	Frank 10 Frary 2 Collins 2 Hoch 5 McConnell 2 Mallot 15
+[Lunch, *]		Frank 5 Frary 5 Collins 2 Hoch 10 McConnell 7 Mallot 5
+[Dinner, *]	Frank 5 Frary 5 Collins 2 Hoch 10 McConnell 7 Mallot 10;
+
+param options :=
+[Breakfast, None, *] Frank 6 Frary 6 Collins 4 Hoch 3 McConnell 3 Mallot 4
+[Breakfast, Vegan, *] Frank 1 Frary 1 Collins 1 Hoch 2 McConnell 0 Mallot 1
+[Breakfast, Allergies, *] Frank 1 Frary 1 Collins 0 Hoch 0 McConnell 0 Mallot 0
+[Brunch, None, *] Frank 9 Frary 6 Collins 5 Hoch 8 McConnell 3 Mallot 7
+[Brunch, Vegan, *] Frank 2 Frary 1 Collins 1 Hoch 1 McConnell 0 Mallot 0 
+[Brunch, Allergies, *] Frank 1 Frary 1 Collins 1 Hoch 4 McConnell 0 Mallot 3
+[Lunch, None, *] Frank 6 Frary 5 Collins 9 Hoch 10 McConnell 5 Mallot 7
+[Lunch, Vegan, *] Frank 1 Frary 1 Collins 1 Hoch 5 McConnell 1 Mallot 2
+[Lunch, Allergies, *] Frank 1 Frary 0 Collins 2 Hoch 1 McConnell 0 Mallot 1
+[Dinner, None, *] Frank 6 Frary 6 Collins 8 Hoch 12 McConnell 7 Mallot 8
+[Dinner, Vegan, *] Frank 2 Frary 2 Collins 2 Hoch 5 McConnell 2 Mallot 2
+[Dinner, Allergies, *] Frank 1 Frary 0 Collins 1 Hoch 1 McConnell 0 Mallot 1;
+
+param quality :=
+[Breakfast, None, *] Frank .81 Frary .78 Collins .65 Hoch .95 McConnell .92 Mallot 1
+[Breakfast, Vegan, *] Frank .76 Frary .65 Collins .53 Hoch .62 McConnell .83 Mallot 1
+[Breakfast, Allergies, *] Frank .65 Frary .32 Collins .43 Hoch .69 McConnell 1 Mallot .93
+[Brunch, None, *] Frank .81 Frary .78 Collins .65 Hoch .95 McConnell .92 Mallot 1
+[Brunch, Vegan, *] Frank .76 Frary .65 Collins .53 Hoch .62 McConnell .83 Mallot 1 
+[Brunch, Allergies, *] Frank .65 Frary .32 Collins .43 Hoch .69 McConnell 1 Mallot .93
+[Lunch, None, *] Frank .81 Frary .75 Collins .75 Hoch 1 McConnell .98 Mallot .95
+[Lunch, Vegan, *] Frank .72 Frary .64 Collins .64 Hoch .64 McConnell .88 Mallot 1
+[Lunch, Allergies, *] Frank .37 Frary .22 Collins .32 Hoch .67 McConnell 1 Mallot .83
+[Dinner, None, *] Frank .73 Frary .67 Collins .72 Hoch 1 McConnell .89 Mallot .87
+[Dinner, Vegan, *] Frank .75 Frary .58 Collins .73 Hoch .83 McConnell .94 Mallot 1
+[Dinner, Allergies, *] Frank .52 Frary .19 Collins .66 Hoch .77 McConnell 1 Mallot .81;
+
+param proximity :=
+[*, Pomona] Frank 4 Frary 4 Collins 8 Hoch 13 McConnell 15 Mallot 7
+[*, Scripps] Frank 10 Frary 5 Collins 5 Hoch 5 McConnell 5 Mallot 2
+[*, CMC] Frank 9 Frary 4 Collins 2 Hoch 8 McConnell 6 Mallot 3
+[*, Mudd] Frank 15 Frary 10 Collins 10 Hoch 2 McConnell 8 Mallot 7
+[*, Pitzer] Frank 17 Frary 12 Collins 7 Hoch 7 McConnell 2 Mallot 7;
+
+param mealExists :=
+[*, Breakfast] Monday 1 Tuesday 1 Wednesday 1 Thursday 1 Friday 1 Saturday 0 Sunday 0
+[*, Brunch] Monday 0 Tuesday 0 Wednesday 0 Thursday 0 Friday 0 Saturday 1 Sunday 1
+[*, Lunch] Monday 1 Tuesday 1 Wednesday 1 Thursday 1 Friday 1 Saturday 0 Sunday 0
+[*, Dinner] Monday 1 Tuesday 1 Wednesday 1 Thursday 1 Friday 1 Saturday 1 Sunday 1;
+
+param preMealLocation :=
+[Monday, Breakfast, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Tuesday, Breakfast, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Wednesday, Breakfast, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Thursday, Breakfast, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Friday, Breakfast, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Saturday, Breakfast, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Sunday, Breakfast, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Monday, Brunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Tuesday, Brunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Wednesday, Brunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Thursday, Brunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Friday, Brunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Saturday, Brunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Sunday, Brunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Monday, Lunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Tuesday, Lunch, *] Pomona 0 Scripps 0 CMC 1 Pitzer 0 Mudd 0
+[Wednesday, Lunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Thursday, Lunch, *] Pomona 0 Scripps 0 CMC 1 Pitzer 0 Mudd 0
+[Friday, Lunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Saturday, Lunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Sunday, Lunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Monday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Tuesday, Dinner, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 1
+[Wednesday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Thursday, Dinner, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 1
+[Friday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Saturday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Sunday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0;
+
+param postMealLocation :=
+[Monday, Breakfast, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 1
+[Tuesday, Breakfast, *] Pomona 0 Scripps 1 CMC 0 Pitzer 0 Mudd 0
+[Wednesday, Breakfast, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 1
+[Thursday, Breakfast, *] Pomona 0 Scripps 1 CMC 0 Pitzer 0 Mudd 0
+[Friday, Breakfast, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 1
+[Saturday, Breakfast, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Sunday, Breakfast, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Monday, Brunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Tuesday, Brunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Wednesday, Brunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Thursday, Brunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Friday, Brunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Saturday, Brunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Sunday, Brunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Monday, Lunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Tuesday, Lunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Wednesday, Lunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Thursday, Lunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Friday, Lunch, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Saturday, Lunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Sunday, Lunch, *] Pomona 0 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Monday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Tuesday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Wednesday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Thursday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Friday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0
+[Saturday, Dinner, *] Pomona 0 Scripps 1 CMC 0 Pitzer 0 Mudd 0
+[Sunday, Dinner, *] Pomona 1 Scripps 0 CMC 0 Pitzer 0 Mudd 0;
+
+param rushFactor :=
+[*, Breakfast]		Monday 30 Tuesday 30 Wednesday 30 Thursday 30 Friday 30 Saturday 1000 Sunday 1000
+[*, Brunch]	Monday 1000 Tuesday 1000 Wednesday 1000 Thursday 1000 Friday 1000 Saturday 90 Sunday 90 
+[*, Lunch]		Monday 60 Tuesday 60 Wednesday 60 Thursday 60 Friday 60 Saturday 1000 Sunday 1000
+[*, Dinner]	Monday 75 Tuesday 75 Wednesday 75 Thursday 75 Friday 75 Saturday 90 Sunday 90;
+
+param varietyFactor := Breakfast 1 Brunch 6 Lunch 4 Dinner 8;
+
+param dailyVarietyFactor := 5;
+
+param restrictionActual := None 1 Vegan 0 Allergies 0;
+
+param mealImportance := Breakfast  .5 Brunch  1 Lunch  1 Dinner 1;
