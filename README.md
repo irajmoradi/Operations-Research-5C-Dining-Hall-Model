@@ -29,5 +29,5 @@ display sum{d in Days, h in Halls, m in Meals} (whereToGo[d,h,m] * timeCrunch[d,
 #Variety Score
 display sum{d in Days, h in Halls} ((sum{m in Meals} (whereToGo[d,h,m])) / (1 + sum{m in Meals} (whereToGo[d,h,m]))) + sum{m in Meals, h in Halls} ((sum{d in Days} (whereToGo[d,h,m])) / (1 + sum{d in Days} (whereToGo[d,h,m])));
 ```
-4.  You can find your optimal schedule by using the command "display whereToGo".
+4.  You can find your optimal schedule by using the command "display whereToGo;".
 5.  Enjoy having a better dining hall schedule.
