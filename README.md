@@ -7,13 +7,13 @@ This is a repository containing a python program as well as AMPL files for use i
 
 1. Run the python file in this repo and input your information/preferences regarding dining hall schedule.
 2. Open AMPLIDE and open the mod file in the repo as well as the .dat file produced in step one.
-3. Run the following commands (You may have to use a open source solver)
+3. Run the following commands (You may have to use a open source solver instead of Gurobi)
 ```
 #Run Program:
 reset;
 option solver gurobi;
 model DiningHallSchedule.mod;
-data FileNameHere.dat;
+data [YourFileNameHere].dat;
 solve;
 
 #To find your optimal schedule:
@@ -29,4 +29,5 @@ display sum{d in Days, h in Halls, m in Meals} (whereToGo[d,h,m] * timeCrunch[d,
 #Variety Score
 display sum{d in Days, h in Halls} ((sum{m in Meals} (whereToGo[d,h,m])) / (1 + sum{m in Meals} (whereToGo[d,h,m]))) + sum{m in Meals, h in Halls} ((sum{d in Days} (whereToGo[d,h,m])) / (1 + sum{d in Days} (whereToGo[d,h,m])));
 ```
-4. Enjoy having a better dining hall schedule.
+4.  You can find your optimal schedule by using the command "display whereToGo".
+5.  Enjoy having a better dining hall schedule.
