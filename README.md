@@ -1,4 +1,4 @@
-# Ops_Research_project
+# Operations-Research-5C-Dining-Hall-Model
 
 
 
